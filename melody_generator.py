@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import random
 from enum import Enum
+from typing import List
 
 from chords import Chord, Chords, ChordSeq
 from melody_properties import MelodyProperties
@@ -117,7 +118,7 @@ class RhythmGenerator:
         else:
             raise AttributeError("RhythmGenerator does not accept this rhythm_type")
 
-    def generate_note_seq(self) -> [NoteSeq]:
+    def generate_note_seq(self) -> List[NoteSeq]:
         """Generates note sequence based on given chord sequence and rhythm pattern"""
         note_seq = []
         for chord in self.chords:
@@ -125,7 +126,7 @@ class RhythmGenerator:
         return [chord for chord in note_seq]
 
     # Definitions of basic rhythms patterns
-    def rhythm_4_40_left(self, chord: Chord) -> [Chord]:
+    def rhythm_4_40_left(self, chord: Chord) -> List[Chord]:
         first_note = Chord([chord.first_note.octave_shift(-1)])
         left_hand_seq = []
         silence = Chords.silence
@@ -141,7 +142,7 @@ class RhythmGenerator:
 
         return left_hand_seq
 
-    def rhythm_4_40_right(self, chord: Chord) -> [Chord]:
+    def rhythm_4_40_right(self, chord: Chord) -> List[Chord]:
         rhythm = []
         new_chord = chord
         silence_chord = Chords.silence
@@ -157,7 +158,7 @@ class RhythmGenerator:
 
         return rhythm
 
-    def rhythm_6_17_left(self, chord: Chord) -> [Chord]:
+    def rhythm_6_17_left(self, chord: Chord) -> List[Chord]:
         rhythm = []
         new_chord = NoteSeq()
 
@@ -169,7 +170,7 @@ class RhythmGenerator:
         rhythm.append(new_chord.stretch_dur(8 / self.subdivided))
         return rhythm
 
-    def rhythm_6_17_right(self, chord: Chord) -> [Chord]:
+    def rhythm_6_17_right(self, chord: Chord) -> List[Chord]:
         rhythm = []
         new_chord = chord
 
@@ -178,7 +179,7 @@ class RhythmGenerator:
         rhythm.append(new_chord.stretch_dur(8 / self.subdivided))
         return rhythm
 
-    def rhythm_heart_and_soul_left(self, chord: Chord) -> [NoteSeq]:
+    def rhythm_heart_and_soul_left(self, chord: Chord) -> List[NoteSeq]:
         first_note = Chord([chord.first_note.octave_shift(-1)])
         left_hand_seq = []
 
@@ -188,7 +189,7 @@ class RhythmGenerator:
         left_hand_seq.append(first_note.stretch_dur(12 / self.subdivided))
         return left_hand_seq
 
-    def rhythm_heart_and_soul_right(self, chord: Chord) -> [NoteSeq]:
+    def rhythm_heart_and_soul_right(self, chord: Chord) -> List[NoteSeq]:
         rhythm = []
         new_chord = chord
         silence_chord = NoteSeq("R")
@@ -202,7 +203,7 @@ class RhythmGenerator:
 
         return rhythm
 
-    def rhythm_16th_note_subdivided_right(self, chord: Chord) -> [NoteSeq]:
+    def rhythm_16th_note_subdivided_right(self, chord: Chord) -> List[NoteSeq]:
         # works best with subdivided = 20
         chord = chord.stretch_dur(2 / self.subdivided)
         l1 = [NoteSeq([chord[0]])] + [NoteSeq([chord[1]])]
@@ -214,13 +215,13 @@ class RhythmGenerator:
 
         return rhythm
 
-    def rhythm_8th_note_subdivided_right(self, chord: Chord) -> [NoteSeq]:
+    def rhythm_8th_note_subdivided_right(self, chord: Chord) -> List[NoteSeq]:
         rhythm = []
         for i in range(0, 4):
             rhythm += [chord.top().stretch_dur(4 / self.subdivided)] + [chord.bottom().stretch_dur(4 / self.subdivided)]
         return rhythm
 
-    def rhythm_constant_chord_left(self, chord: Chord) -> [NoteSeq]:
+    def rhythm_constant_chord_left(self, chord: Chord) -> List[NoteSeq]:
         first_note = chord.first_note.stretch_dur(32 / self.subdivided)
         rhythm = [Chord([first_note.octave_shift(-1)] + [first_note.octave_shift(-2)])]
         return rhythm
